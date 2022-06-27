@@ -49,18 +49,4 @@ public class FileUploadIntegrationTests {
 		then(storageService).should().store(any(MultipartFile.class));
 	}
 
-	@Test
-	public void shouldDownloadFile() throws Exception {
-		ClassPathResource resource = new ClassPathResource("testupload.txt", getClass());
-		given(this.storageService.loadAsResource("testupload.txt")).willReturn(resource);
-
-		ResponseEntity<String> response = this.restTemplate
-				.getForEntity("/files/{filename}", String.class, "testupload.txt");
-
-		assertThat(response.getStatusCodeValue()).isEqualTo(200);
-		assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
-				.isEqualTo("attachment; filename=\"testupload.txt\"");
-		assertThat(response.getBody()).isEqualTo("Spring Framework");
-	}
-
 }
